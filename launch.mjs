@@ -40,7 +40,8 @@ const SETUP_LINE = "shinjuku setup";
 const NPX_SETUP_LINE = `npx -y ${COMMAND_PACKAGE}@${version} setup`;
 
 // A variable that reached us as its own unexpanded placeholder (an optional variable the user did not set) is absent.
-const env = { ...process.env };
+// The wallet reads this exact value to word its update texts for a plugin install ("hermes plugins update shinjuku").
+const env = { ...process.env, SHINJUKU_WALLET_LAUNCHER: "hermes-plugin" };
 for (const [key, value] of Object.entries(env)) if (/^\$\{[A-Za-z_][A-Za-z0-9_]*\}$/.test(value ?? "")) delete env[key];
 const WINDOWS = process.platform === "win32";
 
