@@ -4,11 +4,19 @@ Pay for paid web services privately, read web pages through your private wallet,
 that only you control, from inside Hermes.
 
 **New (November 2026).** The plugin is new. It was checked in the Hermes desktop app 0.23.1 on Windows with
-the wallet file of 0.3.210 (the wallet card and a price check). It has not been through a full test by new users yet.
+wallet 0.3.217 (the wallet card, a price check, a paid search, a private AI answer and the receipts). This version
+starts wallet 0.3.218, which asks you before each price check. It has not been through a full test by new users yet.
 
 What stays private: the seller and the blockchain do not see which wallet paid. If you choose Tor in setup,
 the sites and services the wallet reaches do not see your IP address. What does not change: your Hermes chat
 still goes to its AI company, and that company reads what the wallet answers in the chat.
+
+## What you need first
+
+- **Hermes.** Install it from Nous Research's own page:
+  https://hermes-agent.nousresearch.com/docs/getting-started/installation
+- **Node.js 24 LTS** (or 22.21 or newer). Download the installer for your computer from
+  https://nodejs.org/en/download and run it. The wallet runs on Node.js.
 
 ## Before you start: install and set up the wallet once
 
@@ -47,10 +55,13 @@ The wallet runs with Node.js on Windows (x64) and Linux. It does not run on a Ma
 
 Ask in plain words:
 
+- "What is my balance?": shows your private balance, pays nothing.
 - "What does this API cost?" with its address: checks the price, pays nothing.
 - "Find a paid API for weather data": searches public lists on your computer, pays nothing.
 - "Pay for this service, at most 5 cents": pays privately from your balance.
 - "Show my receipts", "Send 2 USDC back to my wallet".
+- Keep the wallet backup that setup saved (the recovery file and the passphrase file) in a safe place, away
+  from this computer. Never share it: anyone with it can spend your balance.
 - "Add funds": the wallet gives you an address. Send USDC on Solana to it from any wallet or exchange (no SOL
   needed), then tell Hermes "I sent it". Hermes checks your balance and tells you when the USDC arrived and
   when it is private and ready to spend.
