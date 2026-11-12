@@ -85,7 +85,8 @@ Then start a new chat in Hermes (in the Hermes desktop app: Ctrl+K, "Restart gat
 A plugin installed before this version (the one that starts wallet 0.3.218) keeps its folder in use while the
 wallet runs, so on Windows its first update can stop with "WinError 32" ("being used by another process").
 Nothing changed then. Run `hermes gateway stop`, then `hermes plugins update shinjuku` again, then open Hermes
-again. Later updates work while Hermes runs.
+again. Later updates work while Hermes runs. We checked this with Hermes in a terminal, not yet in the Hermes
+desktop app.
 
 ## What the plugin does on your computer
 
