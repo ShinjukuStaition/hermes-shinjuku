@@ -72,6 +72,21 @@ a new deposit address); you can say no, and nothing happens. Your approval setti
 when Hermes asks. The wallet can also ask you itself ("Allow once") before some steps. A balance check pays
 and sends nothing, but when USDC you added is waiting, it makes that USDC private.
 
+## Update the plugin
+
+When the wallet tells you a new version is out, run this in a terminal (Hermes can stay open):
+
+```
+hermes plugins update shinjuku
+```
+
+Then start a new chat in Hermes (in the Hermes desktop app: Ctrl+K, "Restart gateway", "Restart all").
+
+A plugin installed before this version (the one that starts wallet 0.3.218) keeps its folder in use while the
+wallet runs, so on Windows its first update can stop with "WinError 32" ("being used by another process").
+Nothing changed then. Run `hermes gateway stop`, then `hermes plugins update shinjuku` again, then open Hermes
+again. Later updates work while Hermes runs.
+
 ## What the plugin does on your computer
 
 So you know before you install:
