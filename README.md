@@ -50,6 +50,11 @@ The wallet runs with Node.js on Windows (x64) and Linux. It does not run on a Ma
    hermes plugins enable shinjuku
    ```
 
+   The first time, the Hermes desktop app on Windows can show a red note: "MCP server shinjuku is not
+   connected". This is normal and you do not need to do anything. Hermes first prepares its own copy of
+   Node.js, and on a new computer that takes longer than Hermes waits. About a minute later, Hermes tries
+   again by itself and the plugin connects (70 seconds on our test computer). You can close the note.
+
 2. Start Hermes and ask "set up my Shinjuku wallet". Hermes shows the two setup lines above for your
    computer. Run them. Then reload the wallet in Hermes: in a terminal, type `/reload-mcp`; in the Hermes
    desktop app, press Ctrl+K, choose "Restart gateway", then "Restart all"; this also reconnects every other
