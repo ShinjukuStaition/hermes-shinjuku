@@ -42,7 +42,7 @@ The wallet runs with Node.js on Windows (x64) and Linux. It does not run on a Ma
 ## Install the plugin
 
 1. In the Hermes desktop app: Capabilities → Plugins, search "Shinjuku", open the "shinjuku" card and choose
-   Install. Or Capabilities → Plugins → Install from Git, then paste `github.com/ShinjukuStaition/hermes-shinjuku`.
+   Install. Or Capabilities → Plugins → Install from Git, then paste `https://github.com/ShinjukuStaition/hermes-shinjuku`.
    Or in a terminal:
 
    ```
