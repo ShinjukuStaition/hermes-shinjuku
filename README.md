@@ -3,9 +3,10 @@
 Pay for paid web services privately, read web pages through your private wallet, and keep a private balance
 that only you control, from inside Hermes.
 
-**New (November 2026).** The plugin is new. It was checked in the Hermes desktop app 0.23.1 on Windows with
-wallet 0.3.217 (the wallet card, a price check, a paid search, a private AI answer and the receipts). This version
-starts wallet 0.3.266, which asks you before each price check. It has not been through a full test by new users yet.
+**New (November 2026).** The plugin is new. Its first version was checked in November 2026 in the Hermes
+desktop app 0.23.1 on Windows with wallet 0.3.217 (the wallet card, a price check, a paid search, a private AI
+answer and the receipts). This version starts the wallet you installed (the npm package `shinjuku`), with no
+version of its own. No test by a new user has passed yet.
 
 What stays private: the seller and the blockchain do not see which wallet paid. If you choose Tor in setup,
 the sites and services the wallet reaches do not see your IP address. What does not change: your Hermes chat
@@ -15,7 +16,7 @@ still goes to its AI company, and that company reads what the wallet answers in 
 
 - **Hermes.** Install it from Nous Research's own page:
   https://hermes-agent.nousresearch.com/docs/getting-started/installation
-- **Node.js 24 LTS** (or 22.21 or newer). Download the installer for your computer from
+- **Node.js 24 LTS** (24.22.1 or newer; or 22.23.4 or newer). Download the installer for your computer from
   https://nodejs.org/en/download and run it. The wallet runs on Node.js.
 - **Git.** The Hermes app needs Git to install a plugin: without it, the install stops with "spawn git ENOENT".
   On Windows, download Git for Windows from https://git-scm.com/download/win, run it with its default choices,
@@ -26,8 +27,12 @@ still goes to its AI company, and that company reads what the wallet answers in 
 Do this once, before you use the wallet in Hermes. You do not need to look up the lines: after you install
 the plugin, ask Hermes anything about the wallet and it shows you the exact two lines for your computer:
 
-- Linux, in a terminal: `npm install -g shinjuku@0.3.266`, then `shinjuku setup`.
-- Windows, in PowerShell or Command Prompt: `npm.cmd install -g shinjuku@0.3.266`, then `shinjuku.cmd setup`.
+- Linux, in a terminal: `npm install -g shinjuku`, then `shinjuku setup`.
+- Windows, in PowerShell or Command Prompt: `npm.cmd install -g shinjuku`, then `shinjuku.cmd setup`.
+
+On Linux, if npm says EACCES (no permission to write its global folder), install it in your own folder:
+`npm config set prefix ~/.local`, then `npm install -g shinjuku`, then `~/.local/bin/shinjuku setup`. npm then
+installs and updates the wallet there, and the plugin finds it there.
 
 The first line installs the `shinjuku` command. This download goes directly to npm, before setup asks about
 Tor, so npm sees your IP address for it. The second line, setup:
@@ -83,44 +88,40 @@ a new deposit address); you can say no, and nothing happens. Your approval setti
 when Hermes asks. The wallet can also ask you itself ("Allow once") before some steps. A balance check pays
 and sends nothing, but when USDC you added is waiting, it makes that USDC private.
 
-## Update the plugin
+## Update the wallet
 
-When the wallet tells you a new version is out, run this in a terminal (Hermes can stay open):
+The plugin never installs or updates the wallet. When the wallet tells you a new version is out, run the same
+install line again in a terminal (Linux `npm install -g shinjuku`; Windows `npm.cmd install -g shinjuku`). On Linux, if the wallet runs from a folder that is not npm's usual one, the plugin tells Hermes the update lines for
+that folder: `npm config set prefix` with that folder, then the install line. Run both, so the update reaches that wallet. Then reload the wallet in Hermes: `/reload-mcp` in a terminal; in the Hermes desktop app, Ctrl+K, "Restart gateway",
+then "Restart all".
 
-```
-hermes plugins update shinjuku
-```
-
-Then start a new chat in Hermes (in the Hermes desktop app: Ctrl+K, "Restart gateway", "Restart all").
-
-A plugin installed before this version (the one that starts wallet 0.3.218) keeps its folder in use while the
-wallet runs, so on Windows its first update can stop with "WinError 32" ("being used by another process").
-Nothing changed then. Run `hermes gateway stop`, then `hermes plugins update shinjuku` again, then open Hermes
-again. Later updates work while Hermes runs. We checked this with Hermes in a terminal, not yet in the Hermes
-desktop app.
+A plugin update (`hermes plugins update shinjuku`) changes only the plugin's own files.
 
 ## What the plugin does on your computer
 
 So you know before you install:
 
-- **Network:** the plugin itself downloads nothing. It starts the wallet that setup installed; when that
-  wallet is not in npm's usual folders, it asks npm, with npm offline, where your folders are. The wallet connects to Shinjuku's payment service and to the services you pay, over Tor when
-  you chose Tor. Before setup, the first setup line downloads the wallet from npm directly, not over Tor.
+- **Network:** the plugin itself makes no connection and downloads nothing. It starts the `shinjuku` command
+  you installed: it looks only in npm's own global folders (only the one you set, when you set one) and starts the first
+  install it finds there; it never searches your PATH. The wallet connects to Shinjuku's payment service and to the services you pay, over Tor when
+  you chose Tor. Before setup, the install line downloads the wallet from npm directly, not over Tor.
 - **Background:** Hermes starts the wallet as a background program while it runs. With Tor on, the wallet
-  starts its own Tor in the background on Windows, with no window: it downloads Tor once from torproject.org
-  and checks its pinned checksum. On Linux, or if that Tor cannot start, the wallet pays and sends nothing and shows the one command that starts Tor; after it, reload the wallet: `/reload-mcp` in a
-  terminal, or Ctrl+K, "Restart gateway", "Restart all" in the Hermes desktop app (it also reconnects your other
-  Hermes bots).
+  starts its own Tor in the background on Windows, with no window, from the Tor files in its npm package (each
+  checked by its pinned sha256). On Linux, setup says how Tor runs on your computer. If Tor cannot start, the
+  wallet pays and sends nothing and says what to do; after it, reload the wallet: `/reload-mcp` in a terminal, or
+  Ctrl+K, "Restart gateway", "Restart all" in the Hermes desktop app (it also reconnects your other Hermes bots).
 - **Files:** the wallet keeps its keys, its backup and its records in its own folder in your user account.
-  The plugin reads only npm's folders, to find the installed wallet; it stores nothing.
+  To find the installed wallet, the plugin only reads your npm settings file (`.npmrc` in your home folder, or
+  the file `npm_config_userconfig` names, for the folder you set there), npm's own global folders and the `package.json` of the shinjuku package there; it
+  stores nothing.
 - **No telemetry:** the plugin sends no usage reports.
 
 ## Files
 
 - `plugin.json`: the plugin, and the setting that makes Hermes ask before the wallet changes
   anything.
-- `mcp.json`: how Hermes starts the wallet; the wallet version is named here and nowhere else.
-- `launch.mjs`: starts the installed wallet of that version, or tells you the setup lines when it is
-  not installed yet.
+- `mcp.json`: how Hermes starts the wallet: `node launch.mjs`, with no wallet version.
+- `launch.mjs`: finds your installed `shinjuku` command and starts `shinjuku mcp` (Windows `shinjuku.cmd mcp`),
+  or tells you the install lines when it is not installed yet.
 - `skills/wallet/SKILL.md`: how Hermes uses the wallet, and the `/shinjuku:wallet` card.
 - `LICENSE`: MIT, for the files of this repository only. The wallet (the npm package `shinjuku`) has its own license.
